@@ -13,4 +13,9 @@ export default defineConfig({
     shared: ["react"],
   }),
 ],
+  resolve: {
+    alias: {
+      "bunServer": "http://localhost:8005"
+    }
+  }
 })
