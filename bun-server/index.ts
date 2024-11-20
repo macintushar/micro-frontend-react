@@ -1,3 +1,5 @@
+import build from "./build";
+
 const server = Bun.serve({
   port: 8005,
   async fetch(req) {
@@ -15,42 +17,19 @@ const server = Bun.serve({
     }
 
     if (url.pathname === "/") {
-      const transpiler = new Bun.Transpiler({
-        loader: "tsx",
-      });
-      console.log("Request received at /")
-
-      // Read and transpile the TSX file
-      const sourceCode = await Bun.file("src/App.tsx").text();
-      const result = await transpiler.transform(sourceCode);
-
-      return new Response(result, {
-        headers: {
-          "Content-Type": "application/javascript",
-          "Access-Control-Allow-Origin": "*", // Add this line
-          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        },
-      });
+      return new Response("Hello from Mac's Server!");
     }
 
     if (url.pathname === "/jsx") {
-      await Bun.build({
-        entrypoints: ['./src/App.jsx'],
-        outdir: './dist',
-      });
+      const id = url.searchParams.get('id');
+      console.log("\nRequest received at " + url);
+      switch (id) {
+        case '1':
+          return build('App.jsx');
 
-      console.log("Request received at /jsx");
-
-      const buildOutput = await Bun.file("./dist/App.js").text();
-      return new Response(buildOutput, {
-        headers: {
-          "Content-Type": "application/javascript",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        },
-      });
+        case '2':
+          return build('App.tsx')
+      }
     }
 
     return new Response("Not Found", { status: 404 });

@@ -1,11 +1,16 @@
-import React from "react";
+type VisualProps = {
+  onClick: () => void;
+  chartData: any;
+}
 
-export default function App() {
-  
+export default function App({ onClick, chartData }: VisualProps) {
   return (
     <div>
-      <h1>Hello from Bun + React!</h1>
-      <p>This is a React component sent from another server.</p>
+      <h1>This is Component 2</h1>
+      <code>Data for Chart{JSON.stringify(chartData, null, 2)}</code>
+      <div onClick={onClick}>
+        Feedback Section
+      </div>
     </div>
   );
 }
